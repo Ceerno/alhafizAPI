@@ -3,8 +3,9 @@
 This is a FastAPI-based Quran API that allows users to:
 
 - Retrieve a list of suras from the Quran
-- Get the details of a sura by its number
+- Get the details of a sura by its number (with all its verses)
 - Get a verse by sura number and verse number
+- Search for verses in Arabic, French, English, or Wolof
 
 ## How to Run
 
@@ -21,8 +22,23 @@ This is a FastAPI-based Quran API that allows users to:
 ## Endpoints
 
 - `GET /suras` — List all suras
-- `GET /suras/{sura_number}` — Get details of a sura
+- `GET /suras/{sura_number}` — Get details of a sura (with all its verses)
 - `GET /suras/{sura_number}/verses/{verse_number}` — Get a specific verse
+- `GET /search?q=...` — Search for verses in Arabic, French, English, or Wolof
+
+## Data Format
+
+- Suras are loaded from `suras.json` (key: `surahs`)
+- Verses are loaded from `verses.json` (key: `verses`)
+- Each verse includes fields for Arabic, French, English, Wolof, and an image URL
+
+## Example Search
+
+To search for a word or phrase in any language:
+
+```
+GET /search?q=Allah
+```
 
 ## Note
-- The Quran data is currently a sample. Replace with full data or connect to a database for production use.
+- The Quran data is loaded from JSON files. Update these files for your needs.
