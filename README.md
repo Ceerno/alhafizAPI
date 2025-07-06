@@ -11,7 +11,7 @@ This is a FastAPI-based Quran API that allows users to:
 
 1. Install dependencies (already installed if you followed setup):
    ```bash
-   pip install fastapi uvicorn
+   pip install -r requirements.txt
    ```
 2. Start the server:
    ```bash
@@ -25,6 +25,8 @@ This is a FastAPI-based Quran API that allows users to:
 - `GET /suras/{sura_number}` — Get details of a sura (with all its verses)
 - `GET /suras/{sura_number}/verses/{verse_number}` — Get a specific verse
 - `GET /search?q=...` — Search for verses in Arabic, French, English, or Wolof
+- `GET /random-verse` — Get a random verse from the Quran
+- `GET /search-suggestions?q=...` — Get autocomplete suggestions for search (unique words from all AyahText fields)
 
 ## Data Format
 
@@ -32,12 +34,24 @@ This is a FastAPI-based Quran API that allows users to:
 - Verses are loaded from `verses.json` (key: `verses`)
 - Each verse includes fields for Arabic, French, English, Wolof, and an image URL
 
-## Example Search
+## Example Usage
 
-To search for a word or phrase in any language:
+**Search for a word or phrase in any language:**
 
 ```
 GET /search?q=Allah
+```
+
+**Get a random verse:**
+
+```
+GET /random-verse
+```
+
+**Get search suggestions (autocomplete):**
+
+```
+GET /search-suggestions?q=mer
 ```
 
 ## Note
