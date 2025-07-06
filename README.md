@@ -54,5 +54,17 @@ GET /random-verse
 GET /search-suggestions?q=mer
 ```
 
+## Testing
+
+Unit tests are provided in `test_main.py` using pytest and FastAPI's TestClient.
+
+To run the tests:
+
+```bash
+pytest test_main.py
+```
+
+All main endpoints are covered by tests, including sura/verse retrieval, search, random verse, and search suggestions.
+
 ## Note
 - The Quran data is loaded from JSON files. Update these files for your needs.

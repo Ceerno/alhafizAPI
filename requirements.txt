@@ -1,4 +1,7 @@
 fastapi
 uvicorn
+pytest
+httpx
+asgi-wsgi
 asgi-wsgi
 random
