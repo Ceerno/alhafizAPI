@@ -2,12 +2,56 @@ from fastapi import FastAPI, HTTPException, Query
 from typing import List, Dict
 import json
 import os
+import random
 
 app = FastAPI(title="Quran API", description="API to retrieve Quran suras and verses", version="1.0.0")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SURAS_PATH = os.path.join(BASE_DIR, "suras.json")
 VERSES_PATH = os.path.join(BASE_DIR, "verses.json")
+
+
+
+# --- Random Verse Endpoint ---
+@app.get(
+    "/random-verse",
+    response_model=Dict,
+    summary="Get a random verse",
+    description="Returns a random verse from the Quran."
+)
+def get_random_verse():
+    """
+    Returns a random verse from the Quran.
+    """
+    verses = load_verses()
+    verse = random.choice(verses)
+    return verse
+
+# --- Search Suggestions Autocomplete Endpoint ---
+@app.get(
+    "/search-suggestions",
+    response_model=List[str],
+    summary="Get search suggestions (autocomplete)",
+    description="Returns a list of unique words from all AyahText fields for autocomplete suggestions. Optional query parameter 'q' will filter suggestions."
+)
+def search_suggestions(q: str = Query(None, description="Partial word to autocomplete")):
+    """
+    Returns a list of unique words from all AyahText fields for autocomplete suggestions.
+    If 'q' is provided, only suggestions containing 'q' (case-insensitive) are returned.
+    """
+    verses = load_verses()
+    words = set()
+    for v in verses:
+        for field in ("AyahText", "AyahTextFr", "AyahTextEng", "AyahTextWf"):
+            text = v.get(field)
+            if text:
+                for word in text.split():
+                    words.add(word.strip('.,;:!?"\'«»()[]{}'))
+    suggestions = sorted(words)
+    if q:
+        q_lower = q.lower()
+        suggestions = [w for w in suggestions if q_lower in w.lower()]
+    return suggestions
 
 @app.get(
     "/search",
